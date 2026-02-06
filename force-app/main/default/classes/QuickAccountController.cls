@@ -43,7 +43,7 @@ public with sharing class QuickAccountController {
             }
 
         } catch (Exception e) {
-            // Pass the error back to the LWC
+            // Pass the error back to the LW code testing
             throw new AuraHandledException(e.getMessage());
         }
     }
