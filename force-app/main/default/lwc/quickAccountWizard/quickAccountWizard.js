@@ -6,7 +6,7 @@ export default class QuickAccountWizard extends LightningElement {
     @track errorMessage = '';
 
     // Form Data
-    formData = {
+    @track formData = {
         name: '',
         accNumber: '',
         phone: '',
@@ -17,7 +17,20 @@ export default class QuickAccountWizard extends LightningElement {
         city: ''
     };
 
-    // Removed industryOptions getter (Simpler Code)
+    // --- NEW LOGIC: Button State ---
+    get isSaveDisabled() {
+        // 1. Account Name is mandatory
+        if (!this.formData.name) return true;
+
+        // 2. Revenue must be >= 10,000,000
+        // The bot enters 5,000,000, so this condition will be TRUE (Button Disabled)
+        // We convert to Number() to ensure math comparison works correctly
+        if (!this.formData.revenue || Number(this.formData.revenue) < 10000000) {
+            return true;
+        }
+
+        return false;
+    }
 
     handleInputChange(event) {
         const fieldMap = {
@@ -36,6 +49,20 @@ export default class QuickAccountWizard extends LightningElement {
         
         if (key) {
             this.formData[key] = event.target.value;
+            
+            // Optional: You can show a custom error message on the field itself
+            // so the user knows WHY the button is disabled
+            if (fieldId === 'accRevenue') {
+                const inputCmp = this.template.querySelector('[data-id="accRevenue"]');
+                const val = Number(event.target.value);
+                
+                if (val < 10000000) {
+                    inputCmp.setCustomValidity("Revenue must be at least $10,000,000 to proceed.");
+                } else {
+                    inputCmp.setCustomValidity("");
+                }
+                inputCmp.reportValidity();
+            }
         }
     }
 
@@ -43,15 +70,8 @@ export default class QuickAccountWizard extends LightningElement {
         this.successMessage = '';
         this.errorMessage = '';
 
-        const nameInput = this.template.querySelector('[data-id="accName"]');
-        if (!this.formData.name) {
-            nameInput.setCustomValidity("Account Name is required.");
-            nameInput.reportValidity();
-            return;
-        } else {
-            nameInput.setCustomValidity("");
-            nameInput.reportValidity();
-        }
+        // Double check validation (Redundant but safe)
+        if (this.isSaveDisabled) return;
 
         createAccount({ 
             name: this.formData.name,
@@ -75,5 +95,3 @@ export default class QuickAccountWizard extends LightningElement {
         });
     }
 }
-
-//tested
