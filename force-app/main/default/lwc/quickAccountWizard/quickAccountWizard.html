@@ -7,50 +7,47 @@
                 <p class="slds-text-color_weak slds-m-bottom_small">Enter the corporate details below.</p>
             </div>
 
+            <!-- 2-Column Grid Layout -->
             <lightning-layout multiple-rows="true">
+                
+                <!-- COLUMN 1 -->
                 <lightning-layout-item size="6" padding="horizontal-small">
                     <lightning-input label="Account Name" data-id="accName" required onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                     <lightning-input label="Phone" type="tel" data-id="accPhone" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
-                    <lightning-combobox
-                        label="Industry" 
-                        data-id="accIndustry"
-                        placeholder="Select Industry..." 
-                        options={industryOptions} 
-                        onchange={handleInputChange}
-                        class="slds-m-bottom_small">
-                    </lightning-combobox>
-                    <!-- Revenue Input -->
+                    
+                    <!-- CHANGED: Now a simple Text Input instead of Combobox -->
                     <lightning-input 
-                        label="Annual Revenue" 
-                        type="number" 
-                        formatter="currency" 
-                        data-id="accRevenue" 
-                        required 
+                        label="Industry" 
+                        data-id="accIndustry" 
                         onchange={handleInputChange} 
                         class="slds-m-bottom_small">
                     </lightning-input>
+
+                    <lightning-input label="Annual Revenue" type="number" formatter="currency" data-id="accRevenue" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                 </lightning-layout-item>
 
+                <!-- COLUMN 2 -->
                 <lightning-layout-item size="6" padding="horizontal-small">
                     <lightning-input label="Account Number" data-id="accNumber" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                     <lightning-input label="Website" type="url" data-id="accWebsite" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                     <lightning-input label="Employees" type="number" data-id="accEmployees" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                     <lightning-input label="Billing City" data-id="accCity" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                 </lightning-layout-item>
+
             </lightning-layout>
 
+            <!-- Footer Actions -->
             <div class="slds-align_absolute-center slds-m-top_large">
-                <!-- MODIFIED BUTTON -->
                 <lightning-button 
                     variant="brand" 
                     label="Save Account" 
                     title="Save Account" 
                     onclick={handleCreate}
-                    disabled={isSaveDisabled} 
                     class="create-btn">
                 </lightning-button>
             </div>
 
+            <!-- Messages -->
             <template if:true={successMessage}>
                 <div class="slds-notify slds-notify_alert slds-alert_success slds-m-top_medium" role="alert">
                     <h2>{successMessage}</h2>
