@@ -17,23 +17,15 @@ export default class QuickAccountWizard extends LightningElement {
         city: ''
     };
 
-    get industryOptions() {
-        return [
-            { label: 'Technology', value: 'Technology' },
-            { label: 'Finance', value: 'Finance' },
-            { label: 'Healthcare', value: 'Healthcare' },
-            { label: 'Retail', value: 'Retail' }
-        ];
-    }
-
     // --- NEW LOGIC: Button State ---
     get isSaveDisabled() {
-        // 1. Name is mandatory
+        // 1. Account Name is mandatory
         if (!this.formData.name) return true;
 
         // 2. Revenue must be >= 10,000,000
-        // If revenue is missing OR less than 10M, disable button
-        if (!this.formData.revenue || this.formData.revenue < 10000000) {
+        // The bot enters 5,000,000, so this condition will be TRUE (Button Disabled)
+        // We convert to Number()hh to ensure math comparison works correctly
+        if (!this.formData.revenue || Number(this.formData.revenue) < 10000000) {
             return true;
         }
 
@@ -58,11 +50,14 @@ export default class QuickAccountWizard extends LightningElement {
         if (key) {
             this.formData[key] = event.target.value;
             
-            // Optional: Show immediate error on the field for better screenshot
+            // Optional: You can show a custom error message on the field itself
+            // so the user knows WHY the button is disabled
             if (fieldId === 'accRevenue') {
                 const inputCmp = this.template.querySelector('[data-id="accRevenue"]');
-                if (this.formData.revenue < 10000000) {
-                    inputCmp.setCustomValidity("Revenue must be $10M+ for Enterprise Accounts.");
+                const val = Number(event.target.value);
+                
+                if (val < 10000000) {
+                    inputCmp.setCustomValidity("Revenue must be at least $10,000,000 to proceed.");
                 } else {
                     inputCmp.setCustomValidity("");
                 }
@@ -75,7 +70,7 @@ export default class QuickAccountWizard extends LightningElement {
         this.successMessage = '';
         this.errorMessage = '';
 
-        // Double check (redundant but safe)
+        // Double check validation (Redundant but safe)
         if (this.isSaveDisabled) return;
 
         createAccount({ 
@@ -90,7 +85,7 @@ export default class QuickAccountWizard extends LightningElement {
         })
         .then(result => {
             this.successMessage = `Account "${result.Name}" created successfully!`;
-            this.template.querySelectorAll('lightning-input, lightning-combobox').forEach(input => {
+            this.template.querySelectorAll('lightning-input').forEach(input => {
                 input.value = null;
             });
             this.formData = {}; 

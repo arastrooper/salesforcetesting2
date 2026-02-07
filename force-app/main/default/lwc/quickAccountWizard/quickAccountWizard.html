@@ -7,18 +7,21 @@
                 <p class="slds-text-color_weak slds-m-bottom_small">Enter the corporate details below.</p>
             </div>
 
+            <!-- 2-Column Grid Layout -->
             <lightning-layout multiple-rows="true">
+                
+                <!-- COLUMN 1 -->
                 <lightning-layout-item size="6" padding="horizontal-small">
                     <lightning-input label="Account Name" data-id="accName" required onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                     <lightning-input label="Phone" type="tel" data-id="accPhone" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
-                    <lightning-combobox 
+                    
+                    <lightning-input 
                         label="Industry" 
-                        data-id="accIndustry"
-                        placeholder="Select Industry..." 
-                        options={industryOptions} 
-                        onchange={handleInputChange}
+                        data-id="accIndustry" 
+                        onchange={handleInputChange} 
                         class="slds-m-bottom_small">
-                    </lightning-combobox>
+                    </lightning-input>
+
                     <!-- Revenue Input -->
                     <lightning-input 
                         label="Annual Revenue" 
@@ -31,14 +34,17 @@
                     </lightning-input>
                 </lightning-layout-item>
 
+                <!-- COLUMN 2 -->
                 <lightning-layout-item size="6" padding="horizontal-small">
                     <lightning-input label="Account Number" data-id="accNumber" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                     <lightning-input label="Website" type="url" data-id="accWebsite" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                     <lightning-input label="Employees" type="number" data-id="accEmployees" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                     <lightning-input label="Billing City" data-id="accCity" onchange={handleInputChange} class="slds-m-bottom_small"></lightning-input>
                 </lightning-layout-item>
+
             </lightning-layout>
 
+            <!-- Footer Actions -->
             <div class="slds-align_absolute-center slds-m-top_large">
                 <!-- MODIFIED BUTTON -->
                 <lightning-button 
@@ -51,12 +57,14 @@
                 </lightning-button>
             </div>
 
+            <!-- Success Message Area -->
             <template if:true={successMessage}>
                 <div class="slds-notify slds-notify_alert slds-alert_success slds-m-top_medium" role="alert">
                     <h2>{successMessage}</h2>
                 </div>
             </template>
 
+            <!-- Error Message Area -->
             <template if:true={errorMessage}>
                 <div class="slds-notify slds-notify_alert slds-alert_error slds-m-top_medium" role="alert">
                     <h2>{errorMessage}</h2>
