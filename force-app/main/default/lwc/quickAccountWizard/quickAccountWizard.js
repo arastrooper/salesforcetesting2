@@ -24,7 +24,7 @@ export default class QuickAccountWizard extends LightningElement {
 
         // 2. Revenue must be >= 10,000,000
         // The bot enters 5,000,000, so this condition will be TRUE (Button Disabled)
-        // We convert to Number() to ensure math comparison works correctly
+        // We convert to Number()hh to ensure math comparison works correctly
         if (!this.formData.revenue || Number(this.formData.revenue) < 10000000) {
             return true;
         }
